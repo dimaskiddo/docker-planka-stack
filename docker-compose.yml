@@ -17,13 +17,7 @@ services:
   planka:
     image: meltyshev/planka:latest
     command: >
-      bash -c
-        "for i in `seq 1 30`; do
-          ./start.sh &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 seconds...\";
-          sleep 5;
-        done; (exit $$s)"
+      node app.js --prod
     networks:
       - plankanet
     ports:
