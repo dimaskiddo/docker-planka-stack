@@ -1,0 +1,38 @@
+version: '2'
+
+networks:
+  plankanet:
+    driver: bridge
+
+services:
+  postgresql:
+    image: dimaskiddo/debian:postgresql-11
+    networks:
+      - plankanet
+    env_file: ./env/postgresql.env
+    volumes:
+      - ./data/postgresql:/var/lib/pgsql/data
+    restart: unless-stopped
+
+  planka:
+    image: meltyshev/planka:latest
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          ./start.sh &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 seconds...\";
+          sleep 5;
+        done; (exit $$s)"
+    networks:
+      - plankanet
+    ports:
+      - 127.0.0.1:1337:1337
+    env_file: ./env/planka.env
+    volumes:
+      - ./data/planka/user-avatars:/app/public/user-avatars
+      - ./data/planka/project-background-images:/app/public/project-background-images
+      - ./data/planka/attachments:/app/public/attachments
+    restart: unless-stopped
+    depends_on:
+      - postgresql
