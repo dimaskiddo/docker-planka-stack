@@ -27,7 +27,7 @@ services:
     networks:
       - plankanet
     ports:
-      - 127.0.0.1:1337:1337
+      - 80:1337
     env_file: ./env/planka.env
     volumes:
       - ./data/planka/user-avatars:/app/public/user-avatars
