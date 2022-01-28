@@ -6,7 +6,7 @@ networks:
 
 services:
   postgresql:
-    image: dimaskiddo/debian:postgresql-12
+    image: dimaskiddo/debian-buster:postgresql-12
     networks:
       - plankanet
     env_file: ./env/postgresql.env
